@@ -19,8 +19,6 @@ def main(params):
     table_name = params.table_name
     url = params.url
     
-    # the backup files are gzipped, and it's important to keep the correct extension
-    # for pandas to be able to open the file
     if url.endswith('.csv.gz'):
         csv_name = 'output.csv.gz'
     else:
@@ -30,12 +28,13 @@ def main(params):
 
     engine = create_engine(f'postgresql://{user}:{password}@{host}:{port}/{db}')
 
-    df_iter = pd.read_csv(csv_name, iterator=True, chunksize=100000)
+    df_iter = pd.read_csv(csv_name, low_memory=False, iterator=True, chunksize=100000)
 
     df = next(df_iter)
 
-    df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
-    df.tpep_dropoff_datetime = pd.to_datetime(df.tpep_dropoff_datetime)
+    # df.lpep_pickup_datetime = pd.to_datetime(df.lpep_pickup_datetime)
+    # df.lpep_dropoff_datetime = pd.to_datetime(df.lpep_dropoff_datetime)
+    # df.store_and_fwd_flag = df.store_and_fwd_flag.map({'N': False, 'Y': True, '': None}).astype('boolean')
 
     df.head(n=0).to_sql(name=table_name, con=engine, if_exists='replace')
 
@@ -49,8 +48,9 @@ def main(params):
             
             df = next(df_iter)
 
-            df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
-            df.tpep_dropoff_datetime = pd.to_datetime(df.tpep_dropoff_datetime)
+            # df.lpep_pickup_datetime = pd.to_datetime(df.lpep_pickup_datetime)
+            # df.lpep_dropoff_datetime = pd.to_datetime(df.lpep_dropoff_datetime)
+            # df.store_and_fwd_flag = df.store_and_fwd_flag.map({'N': False, 'Y': True, '': None}).astype('boolean')
 
             df.to_sql(name=table_name, con=engine, if_exists='append')
 
