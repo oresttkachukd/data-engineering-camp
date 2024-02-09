@@ -10,7 +10,6 @@ import os
 if 'data_exporter' not in globals():
     from mage_ai.data_preparation.decorators import data_exporter
 
-
 config_path = path.join(get_repo_path(), 'io_config.yaml')
 config = ConfigFileLoader(config_path, 'default')
 
@@ -18,8 +17,8 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = config.get(ConfigKey.GOOGLE_SERVI
 
 @data_exporter
 def export_data_to_google_cloud_storage(df: DataFrame, **kwargs) -> None:    
-    bucket_name = '--'
-    table_name='--'
+    bucket_name = 'mage_taxi_data'
+    table_name='mage_taxi_table'
 
     root_path=f'{bucket_name}/{table_name}'
 
