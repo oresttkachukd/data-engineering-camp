@@ -1,4 +1,5 @@
 from mage_ai.settings.repo import get_repo_path
+from mage_ai.io.base import FileFormat
 from mage_ai.io.config import ConfigFileLoader
 from mage_ai.io.google_cloud_storage import GoogleCloudStorage
 from pandas import DataFrame
@@ -14,10 +15,10 @@ def export_data_to_google_cloud_storage(df: DataFrame, **kwargs) -> None:
     config_profile = 'default'
 
     bucket_name = 'dw_taxi_data'
-    object_key = 'green_taxi_data'
+    object_key = 'green_taxi_data/data.parquet'
 
     GoogleCloudStorage.with_config(ConfigFileLoader(config_path, config_profile)).export(
         df,
         bucket_name,
-        object_key,
+        object_key
     )

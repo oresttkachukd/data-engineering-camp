@@ -5,7 +5,7 @@ blocks:
     file_source:
       path: data_loaders/load_csvs.py
   downstream_blocks:
-  - export_data_to_gcs_parquet
+  - transform_csvs_parquet
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -26,13 +26,47 @@ blocks:
   has_callback: false
   language: python
   name: export_data_to_gcs_parquet
+  retry_config: {}
+  status: executed
+  timeout: '300'
+  type: data_exporter
+  upstream_blocks:
+  - transform_csvs_parquet
+  uuid: export_data_to_gcs_parquet
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: export_data_to_gcs_parquet_partitioned
   retry_config: null
   status: executed
   timeout: null
   type: data_exporter
   upstream_blocks:
+  - transform_csvs_parquet
+  uuid: export_data_to_gcs_parquet_partitioned
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - export_data_to_gcs_parquet
+  - export_data_to_gcs_parquet_partitioned
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: transform_csvs_parquet
+  retry_config: null
+  status: executed
+  timeout: null
+  type: transformer
+  upstream_blocks:
   - load_csvs_parquet
-  uuid: export_data_to_gcs_parquet
+  uuid: transform_csvs_parquet
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}
@@ -54,7 +88,7 @@ settings:
 spark_config: {}
 tags: []
 type: python
-updated_at: '2024-02-09 01:20:10'
+updated_at: '2024-02-11 02:25:19'
 uuid: green_taxi_parquet_etl
 variables_dir: /home/src/mage_data/magic-zoomcamp
 widgets: []

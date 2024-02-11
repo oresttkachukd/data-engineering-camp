@@ -21,8 +21,8 @@ def load_data_from_api(*args, **kwargs):
             'https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2022-10.parquet',
             'https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2022-11.parquet',
             'https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2022-12.parquet',
-        ]
-        
+        ]  
+
     
     taxi_dtypes = {
                     'VendorID': pd.Int64Dtype(),
@@ -41,12 +41,9 @@ def load_data_from_api(*args, **kwargs):
                     'improvement_surcharge':float,
                     'total_amount':float,
                     'congestion_surcharge':float,
-                    'lpep_pickup_datetime': 'datetime64[ns]',
-                    'lpep_dropoff_datetime': 'datetime64[ns]'
+                    'lpep_pickup_datetime': str,
+                    'lpep_dropoff_datetime': str
                 }
-
-    # native date parsing 
-    parse_dates = ['lpep_pickup_datetime', 'lpep_dropoff_datetime']
 
     result = pd.DataFrame()
 
@@ -55,6 +52,9 @@ def load_data_from_api(*args, **kwargs):
             result,
             pd.read_parquet(url, engine='pyarrow', columns=list(taxi_dtypes.keys())).astype(taxi_dtypes)
         ], ignore_index=True)
+
+    result["lpep_pickup_datetime"] = pd.to_datetime(result["lpep_pickup_datetime"])
+    result["lpep_dropoff_datetime"] = pd.to_datetime(result["lpep_dropoff_datetime"])
 
     return result;
 
