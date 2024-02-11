@@ -40,6 +40,10 @@ SELECT * from `dw_dataset.green_taxi_data` limit 10;
 SELECT * from `dw_dataset.green_taxi_data_nonpartitioned` limit 10;
 SELECT * from `dw_dataset.green_taxi_data_partitioned_clustered` limit 10;
 
+SELECT count(*) from `dw_dataset.green_taxi_data` limit 10;
+SELECT count(*) from `dw_dataset.green_taxi_data_nonpartitioned` limit 10;
+SELECT count(*) from `dw_dataset.green_taxi_data_partitioned_clustered` limit 10;
+
 
 -- 1 
 SELECT count(*) FROM `dw_dataset.green_taxi_data`;
@@ -59,10 +63,11 @@ CLUSTER BY PULocationID AS (
 );
 
 -- 5
-SELECT DISTINCT PULocationID
-FROM `dw_dataset.green_taxi_data_nonpartitioned`
+SELECT DISTINCT PULocationID FROM `dw_dataset.green_taxi_data_nonpartitioned`
 WHERE lpep_pickup_datetime BETWEEN TIMESTAMP('2022-06-01') AND TIMESTAMP('2022-06-30');
 
-SELECT DISTINCT PULocationID
-FROM `dw_dataset.green_taxi_data_partitioned_clustered`
+SELECT DISTINCT PULocationID FROM `dw_dataset.green_taxi_data_partitioned_clustered`
 WHERE lpep_pickup_datetime BETWEEN TIMESTAMP('2022-06-01') AND TIMESTAMP('2022-06-30');
+
+-- 8
+SELECT count(*) FROM `dw_dataset.green_taxi_data_nonpartitioned` 
