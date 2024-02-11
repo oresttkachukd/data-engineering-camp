@@ -30,5 +30,6 @@ def export_data_to_google_cloud_storage(df: DataFrame, **kwargs) -> None:
         table,
         root_path,
         partition_cols=['lpep_pickup_date'],
-        filesystem = gcs
+        filesystem = gcs,
+        use_deprecated_int96_timestamps = True
     )
